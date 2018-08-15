@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+        
+        
+	<link rel="stylesheet" href="css/jquery.mobile-1.4.5.css">
+	<script src="js/jquery-1.11.1.min.js"></script>
+	<script src="js/jquery.mobile-1.4.5.min.js"></script>
+	
+    
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  
+      <link href="font-awesome-4.7.0/css/font-awesome.css"  rel="stylesheet">
+    
+        <title>Save Contact App</title>
+    </head>
+    <style>
+     #header{
+        background:#7070db;
+        text-align: center;
+        padding-top:5px;
+        font-family: 'Nunito', sans-serif;
+        position:fixed;
+        top:0;
+        width:100%;
+        z-index: 99;
+        border:none;
+        text-shadow: none;
+        box-shadow: none;
+        color:white;
+    }
+    #header h1{
+        font-size:20px;
+        padding-top:28px;
+    }
+    
+    #content{
+        text-align:center;
+         margin-top: 100px;
+        font-family: 'Nunito', sans-serif;
+    }
+    
+        .ui-input-btn{
+        font-family: 'Nunito', sans-serif;
+        }
+   
+ 
+    #footer{
+        background:#7070db;
+        position:absolute;
+        width:100%;
+        bottom:0;
+        text-align:center;
+        font-family: 'Nunito', sans-serif;
+        position:fixed;
+        bottom:0;
+        z-index: 99;
+        border:none;
+        text-shadow: none;
+        box-shadow: none;
+        color:white;
+    }
+    
+    .fa{
+        font-size:25px;
+    }
+    #footer .fa{
+        margin:12px;
+        margin-left:35px;
+        margin-right:35px;
+            
+    }
+    
+     #header .fa{
+        padding-top:25px;
+        margin-left:35px;
+        margin-right:35px;
+    }
+    
+    .fa-angle-left{
+     display:inline-block;
+     float:left;
+     font-weight:bold;
+    }
+   
+    .fa-users{
+        float:left;
+    }
+    
+        
+    </style>
+    
+    
+    <body>
+        <script type="text/javascript" src="cordova.js"></script>
+        
+        <div data-role="page"  id="page1"> 
+	<div data-role="header"  id="header"> 
+    <i class="fa fa-users" aria-hidden="true"></i>
+    <h1>Add Contact</h1>
+    </div> 
+	<div data-role="content" id="content">
+        
+        
+        <form id="myform">
+    <div>
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName">
+        <label for="LastName">Last Name</label>
+        <input type="text" id="lastName">
+        <label for="phoneNO">Phone Number</label>
+        <input type="text" id="phoneNO">
+    </div><br>
+           
+            <button type="submit" style="background:#7070db; color:white; text-shadow:none;font-family: 'Nunito', sans-serif;">Save Contact</button>   
+        </form>
+            </div><!---- content --->
+        </div><!---- page --->
+        
+        <script>
+        document.addEventListener("deviceready", onDeviceReady, false);
+            
+        function onDeviceReady(){
+            $("#myform").on("submit", function(e){
+            var first_name= $("#firstName").val();
+            var last_name= $("#lastName").val();
+            var phone_no= $("#phoneNO").val();
+                
+           var myContact = navigator.contacts.create({
+               "DisplayName": first_name + ' ' + last_name
+           });  
+                
+                
+var name = new ContactName();
+name.givenName = first_name;
+name.familyName = last_name;
+myContact .name = name;    
+                
+ var contact = navigator.contacts.create();
+
+    // store contact phone numbers in ContactField[]
+    var phoneNumbers = [];
+    phoneNumbers[0] = new ContactField('mobile', phone_no, true);
+    
+    myContact.phoneNumbers = phoneNumbers;
+
+    // save the contact
+    myContact.save(function(contact){
+    alert("added" + first_name + " " + contact.name.familyName);
+    $("#firstName").val('');
+    $("#lastName").val('');
+    $("#phoneNO").val('');
+    },
+    function(err){
+        alert(err);
+    
+    });
+                
+             e.preventDefault();  /*-- prevent the form form submiting to the page --*/  
+            });
+        }
+        
+        
+        </script>    
+    </body>
+</html>
